@@ -7,20 +7,22 @@ namespace schoolProject
 {
     internal class Program
     {
-
-        public static bilInfo[] bilLista;
-        public struct bilar
-        {
-            public string bilMarke;
-            public string regNu;     
-            public string farger;
-            
-
-        }
+       
+        public static bilar[] bilLista;
         
+        public class bilar
+       
+        {
+
+            public string farger;
+            public string regNu;
+            public string bilMarke;
+        }
+
         static void Main(string[] args)
         {
 
+            hämtadata();
 
             string svar;
             int val;
@@ -31,6 +33,7 @@ namespace schoolProject
 
                 do
                 {
+
                     Console.WriteLine("----------------------------");
                     Console.WriteLine("|Välkommen till bilregister|");
                     Console.WriteLine("----------------------------");
@@ -65,7 +68,9 @@ namespace schoolProject
 
                         case 4:
                             Environment.Exit(0);
-                            Console.WriteLine("Tack för din besök");
+                            Console.WriteLine("-------------------");
+                            Console.WriteLine("Tack för din besök.");
+                            Console.WriteLine("-------------------");
                             break;
 
                         default:
@@ -104,28 +109,50 @@ namespace schoolProject
             Console.WriteLine("-------------------");
 
         }
-        static void seBil()
+        static void hämtadata()
 
         {
 
 
             StreamReader visaData = new StreamReader("bilar.txt");
+            
+            int antalBilar = File.ReadLines("bilar.txt").Count();
+            bilLista = new bilar[antalBilar];
 
-            bilLista = new bilInfo[3];
-
+            int i = 0;
             string line;
+            
             while ((line = visaData.ReadLine()) != null)
             {
-                bilInfo bil = new bilInfo(); 
-                string[] tab = line.Split('\t');
-                bil.bilMarke = tab[0];
-                bil.regNu = tab[1];
-                bil.farger = tab[2];
+                bilar bil = new bilar(); 
+                string[] del = line.Split('\t');
+                bil.bilMarke = del[0];
+                bil.regNu = del[1];
+                bil.farger = del[2];
+
+                bilLista[i] = bil;
+                i++;
             }
             visaData.Close();
+           
+
+        }
+        static void seBil()
+        {
+
+            Array.Sort(bilLista, (x, y) => x.bilMarke.CompareTo(y.bilMarke));
+
+            foreach (bilar bil in bilLista)
+            {
+
+                Console.WriteLine("---------------------------------------------------------------------");
+                Console.WriteLine($"Fordons info: Bilen är: {bil.bilMarke}|| Regnum är: {bil.regNu}|| Färgen är: {bil.farger}||");
+                Console.WriteLine("----------------------------------------------------------------------");
+            }
 
 
         }
+
         static void läggBil()
         {
 
@@ -134,7 +161,7 @@ namespace schoolProject
             string bilMarke, regNu, farger;
 
 
-           Console.Write("Vad är din bils märke: ");
+            Console.Write("Vad är din bils märke: ");
            bilMarke = Console.ReadLine();
              
  
@@ -152,15 +179,16 @@ namespace schoolProject
 
             
 
+            
+            
             läggData.Close();
-
+        
+        
         }
 
                
         
     }
 
-    public class bilInfo
-    {
-    }
+    
 }
