@@ -8,10 +8,11 @@ namespace schoolProject
     internal class Program
     {
        
+        
         public static bilar[] bilLista;
         
         public class bilar
-       
+
         {
 
             public string farger;
@@ -22,7 +23,7 @@ namespace schoolProject
         static void Main(string[] args)
         {
 
-            hämtadata();
+           
 
             string svar;
             int val;
@@ -39,7 +40,8 @@ namespace schoolProject
                     Console.WriteLine("----------------------------");
                     Console.Write("Ange vilket altinativ vill köra.");
 
-                    Console.WriteLine("\n\n1. Se bilar.");
+                    Console.WriteLine("\n\n1. Se bilar storerat.");
+                    Console.WriteLine("2. Visa bilar ostorerat");
                     Console.WriteLine("2. Lägg till din bil.");
                     Console.WriteLine("3. Ta bort din bil");
                     Console.WriteLine("4. Avsluta programmet.");
@@ -53,7 +55,6 @@ namespace schoolProject
                     switch (val)
                     {
                         case 1:
-                            Console.Clear();
                             seBil();
                             break;
 
@@ -61,12 +62,15 @@ namespace schoolProject
                             Console.Clear();
                             läggBil();
                             break;
-
                         case 3:
+                            osortBil();
+                            break;
+                        
+                        case 4:
 
                             break;
 
-                        case 4:
+                        case 5:
                             Environment.Exit(0);
                             Console.WriteLine("-------------------");
                             Console.WriteLine("Tack för din besök.");
@@ -139,8 +143,25 @@ namespace schoolProject
         }
         static void seBil()
         {
+            hämtadata();
 
             Array.Sort(bilLista, (x, y) => x.bilMarke.CompareTo(y.bilMarke));
+            
+            foreach (bilar bil in bilLista)
+            {
+
+                Console.WriteLine("---------------------------------------------------------------------");
+                Console.WriteLine($"Fordons info: Bilen är: {bil.bilMarke}|| Regnum är: {bil.regNu}|| Färgen är: {bil.farger}||");
+                Console.WriteLine("----------------------------------------------------------------------");
+
+            }
+
+
+        }
+        static void osortBil()
+        {
+            hämtadata();
+
 
             foreach (bilar bil in bilLista)
             {
@@ -148,11 +169,11 @@ namespace schoolProject
                 Console.WriteLine("---------------------------------------------------------------------");
                 Console.WriteLine($"Fordons info: Bilen är: {bil.bilMarke}|| Regnum är: {bil.regNu}|| Färgen är: {bil.farger}||");
                 Console.WriteLine("----------------------------------------------------------------------");
+
             }
 
 
         }
-
         static void läggBil()
         {
 
@@ -177,9 +198,6 @@ namespace schoolProject
  
            läggData.WriteLine($"{bilMarke}\t{regNu}\t{farger}");
 
-            
-
-            
             
             läggData.Close();
         
