@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
+using System.Reflection;
 using System.Security;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace schoolProject
 {
@@ -34,21 +36,24 @@ namespace schoolProject
 
                 do
                 {
+                    Console.WriteLine("   _______");
+                    Console.WriteLine(" //      \\ \\______");
+                    Console.WriteLine("||  ====  ||  ===  \\");
+                    Console.WriteLine(" \\\\______/________  ");
 
-                    Console.WriteLine("----------------------------");
-                    Console.WriteLine("|Välkommen till bilregister|");
-                    Console.WriteLine("----------------------------");
-                    Console.Write("Ange vilket altinativ vill köra.");
-
-                    Console.WriteLine("\n\n1. Se bilar storerat.");
-                    Console.WriteLine("2. Visa bilar ostorerat");
-                    Console.WriteLine("2. Lägg till din bil.");
-                    Console.WriteLine("3. Ta bort din bil");
-                    Console.WriteLine("4. Avsluta programmet.");
-
-                    while (!int.TryParse(Console.ReadLine(), out val));
+                    Console.WriteLine("------------------------------");
+                    Console.WriteLine("|  Välkommen till bilregister |");
+                    Console.WriteLine("------------------------------");
+                    Console.WriteLine("|   1. Se alla bilar.         |");
+                    Console.WriteLine("|   2. Lägg till ett bil.     |");
+                    Console.WriteLine("|   3. Ta bort din bil.       |");
+                    Console.WriteLine("|   4. Avsluta programmet.    |");
+                    Console.WriteLine("-------------------------------");
+                    Console.WriteLine("Ange vilket altinativ vill köra.");
+                   
+                    while (!int.TryParse(Console.ReadLine(), out val)); //för att kontrollera att inamatning är korrekt
                     {
-                        Console.WriteLine("Ange korrekt val.");
+                       
                     }
 
                     //switch gör det möjligt att användare mellan olika fall. 
@@ -62,15 +67,13 @@ namespace schoolProject
                             Console.Clear();
                             läggBil();
                             break;
-                        case 3:
-                            osortBil();
-                            break;
                         
-                        case 4:
-
+                        case 3:
+                            TaBortBil();
                             break;
 
-                        case 5:
+                        case 4:
+                            
                             Environment.Exit(0);
                             Console.WriteLine("-------------------");
                             Console.WriteLine("Tack för din besök.");
@@ -97,6 +100,8 @@ namespace schoolProject
                     {
                         Console.WriteLine("Din inmatning är icke korrekt");
                     }
+                    Console.Clear();
+gi
 
                 } while (svar != "JA" && svar != "NEJ");
 
@@ -113,20 +118,20 @@ namespace schoolProject
             Console.WriteLine("-------------------");
 
         }
-        static void hämtadata()
+       public static void hämtadata()
 
         {
 
 
-            StreamReader visaData = new StreamReader("bilar.txt");
+            StreamReader visaData = new StreamReader("bilar.txt"); //för att läsa rader från filen
             
-            int antalBilar = File.ReadLines("bilar.txt").Count();
+            int antalBilar = File.ReadLines("bilar.txt").Count(); //för att räkna rader utan att jag sätter gräns på antalet
             bilLista = new bilar[antalBilar];
 
             int i = 0;
             string line;
             
-            while ((line = visaData.ReadLine()) != null)
+            while ((line = visaData.ReadLine()) != null) //denna loop gör att det läseralla rader tills filen är tom.
             {
                 bilar bil = new bilar(); 
                 string[] del = line.Split('\t');
@@ -145,39 +150,26 @@ namespace schoolProject
         {
             hämtadata();
 
-            Array.Sort(bilLista, (x, y) => x.bilMarke.CompareTo(y.bilMarke));
+            int index = 0;
+            Array.Sort(bilLista, (x, y) => x.bilMarke.CompareTo(y.bilMarke)); //jag valde att den sortera bilmärken. 
             
             foreach (bilar bil in bilLista)
             {
 
                 Console.WriteLine("---------------------------------------------------------------------");
-                Console.WriteLine($"Fordons info: Bilen är: {bil.bilMarke}|| Regnum är: {bil.regNu}|| Färgen är: {bil.farger}||");
+                Console.WriteLine($"Fordons nummer {index}: Bilen är: {bil.bilMarke}|| Regnum är: {bil.regNu}|| Färgen är: {bil.farger}||");
                 Console.WriteLine("----------------------------------------------------------------------");
-
+                index++;
             }
 
-
+            
         }
-        static void osortBil()
-        {
-            hämtadata();
-
-
-            foreach (bilar bil in bilLista)
-            {
-
-                Console.WriteLine("---------------------------------------------------------------------");
-                Console.WriteLine($"Fordons info: Bilen är: {bil.bilMarke}|| Regnum är: {bil.regNu}|| Färgen är: {bil.farger}||");
-                Console.WriteLine("----------------------------------------------------------------------");
-
-            }
-
-
-        }
+        
+       
         static void läggBil()
         {
 
-           StreamWriter läggData = new StreamWriter("bilar.txt", true);
+           StreamWriter läggData = new StreamWriter("bilar.txt", true); //för att skriva in i filen.
 
             string bilMarke, regNu, farger;
 
@@ -204,9 +196,52 @@ namespace schoolProject
         
         }
 
-               
-        
+        static void TaBortBil()
+        {
+            Console.WriteLine("Ange index på bilen du vill ta bort.");
+            int bilToRemove;
+            
+            bool rättInMatning = int.TryParse(Console.ReadLine(), out bilToRemove);
+
+            if (!rättInMatning || bilToRemove < 0 || bilToRemove >= bilLista.Length)
+            {
+                Console.WriteLine("Ogiltigt index. Försök igen.");
+                return;
+            }
+
+            bilar[] nyBilLista = new bilar[bilLista.Length - 1]; //för att ta bort index
+
+            int index = 0;
+
+            //för att spara det i listan
+            for (int i = 0; i < bilLista.Length; i++)
+            {
+                if (i != bilToRemove)
+                {
+                    nyBilLista[index] = bilLista[i];
+                    index++;
+                }
+            }
+
+            bilLista = nyBilLista;
+            Sparadata();
+        }
+
+        static void Sparadata() //metoden är för spara nydata efter att man ta bort något bil.
+        {
+            using (StreamWriter nyData = new StreamWriter("bilar.txt", false)) //false är för innehållet i filen att rensas innan ny data skrivs till den. 
+            {
+                foreach (bilar enBil in bilLista)
+                {
+                    nyData.WriteLine($"{enBil.bilMarke}\t{enBil.regNu}\t{enBil.regNu}");
+                }
+            }
+
+            Console.WriteLine("Data har uppddaterats.");
+        }
+
+
     }
 
-    
+
 }
