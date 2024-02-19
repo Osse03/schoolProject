@@ -30,11 +30,11 @@ namespace schoolProject
             string svar;
             int val;
 
-            //En stor loop att inkludera meny 
+            //En stor loop för inkludera hela meny 
             do
             {
 
-                do
+                do//loop för själva meny
                 {
                     Console.WriteLine("   _______");
                     Console.WriteLine(" //      \\ \\______");
@@ -159,6 +159,7 @@ namespace schoolProject
                 Console.WriteLine("---------------------------------------------------------------------");
                 Console.WriteLine($"Fordons nummer {index}: Bilen är: {bil.bilMarke}|| Regnum är: {bil.regNu}|| Färgen är: {bil.farger}||");
                 Console.WriteLine("----------------------------------------------------------------------");
+                
                 index++;
             }
 
