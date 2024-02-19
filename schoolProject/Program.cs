@@ -101,7 +101,7 @@ namespace schoolProject
                         Console.WriteLine("Din inmatning är icke korrekt");
                     }
                     Console.Clear();
-gi
+
 
                 } while (svar != "JA" && svar != "NEJ");
 
