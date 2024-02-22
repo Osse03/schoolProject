@@ -44,8 +44,8 @@ namespace schoolProject
                     Console.WriteLine("------------------------------");
                     Console.WriteLine("|  Välkommen till bilregister |");
                     Console.WriteLine("------------------------------");
-                    Console.WriteLine("|   1. Se alla bilar.         |");
-                    Console.WriteLine("|   2. Lägg till ett bil.     |");
+                    Console.WriteLine("|   1. Lägg till ett bil.     |");
+                    Console.WriteLine("|   2. Se alla bilar.         |");
                     Console.WriteLine("|   3. Ta bort din bil.       |");
                     Console.WriteLine("|   4. Avsluta programmet.    |");
                     Console.WriteLine("-------------------------------");
@@ -60,12 +60,12 @@ namespace schoolProject
                     switch (val)
                     {
                         case 1:
-                            seBil();
+                            läggBil();
                             break;
 
                         case 2:
                             Console.Clear();
-                            läggBil();
+                            seBil();
                             break;
                         
                         case 3:
