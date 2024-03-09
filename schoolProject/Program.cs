@@ -56,43 +56,45 @@ namespace schoolProject
                    
                     while (!int.TryParse(Console.ReadLine(), out val)); //för att kontrollera att inamatning är korrekt
                     {
-                       
-                    }
 
-                    //switch gör det möjligt att användare mellan olika fall. 
-                    switch (val)
-                    {
-                        case 1:
-                            läggBil();
-                            break;
+                    }   
 
-                        case 2:
-                            Console.Clear();
-                            seBil();
-                            break;
-                        
-                        case 3:
-                            TaBortBil();
-                            break;
+                        //switch gör det möjligt att användare mellan olika fall. 
+                        switch (val)
+                        {
+                            case 1:
+                                läggBil();
+                                break;
 
-                        case 4:
-                            sökaBil();
-                            break;
+                            case 2:
+                                Console.Clear();
+                                seBil();
+                                break;
 
-                        case 5:
-                            
-                            Environment.Exit(0); // för att stäng ner programmet
-                            Console.WriteLine("-------------------");
-                            Console.WriteLine("Tack för din besök.");
-                            Console.WriteLine("-------------------");
-                            break;
+                            case 3:
+                                TaBortBil();
+                                break;
 
-                        default:
-                            Console.WriteLine("Din inmatning är fel.");
-                            break;
-                    }
+                            case 4:
+                                sökaBil();
+                                break;
 
-                } while (val != 1 && val != 2 && val != 3); // för att bryta loopen
+                            case 5:
+
+                                Environment.Exit(0); // för att stäng ner programmet
+                                Console.WriteLine("-------------------");
+                                Console.WriteLine("Tack för din besök.");
+                                Console.WriteLine("-------------------");
+                                break;
+
+                            default:
+                                Console.WriteLine("Din inmatning är fel.");
+
+                                break;
+                        }
+                         
+
+                } while (val != 1 && val != 2 && val != 3 && val != 4 && val != 5); // för att bryta loopen
 
                 //Denna do loop för att kolla om användare vill se meny igen.
                 do
@@ -111,7 +113,7 @@ namespace schoolProject
 
 
                 } while (svar != "JA" && svar != "NEJ"); // för att bryta loopen
-
+                Console.Clear();
 
 
 
@@ -159,7 +161,7 @@ namespace schoolProject
         {
             hämtadata();
 
-            int index = 1; // för att börja från 1 och inte 0
+            int index = 0; 
             Array.Sort(bilLista, (x, y) => x.bilMarke.CompareTo(y.bilMarke)); //jag valde att den sortera bilmärken. 
             
             foreach (bilInfo bil in bilLista) // gå genom allt innehåll i filen
@@ -198,7 +200,7 @@ namespace schoolProject
     
            Console.WriteLine("Din bil är nu registrera.");
  
-           läggData.WriteLine($"{bilMarke}\t{regNu}\t{farger}");
+           läggData.WriteLine($"{bilMarke}\t{regNu}\t{farger}"); // sprar data i samma plasering som denna 
 
             
             läggData.Close(); // här spara man data som användare mattar in. 
@@ -208,13 +210,14 @@ namespace schoolProject
 
         static void TaBortBil()
         {
-            Console.WriteLine("Ange index på bilen du vill ta bort.");
+            Console.WriteLine("Ange siffran på bilen du vill ta bort.");
             int bilToRemove;
             
-            bool rättInMatning = int.TryParse(Console.ReadLine(), out bilToRemove); // kontrollerar i fall inmatningen är rätt 
+            bool rättInMatning = int.TryParse(Console.ReadLine(), out bilToRemove); // kontrollerar i fall siffra är rätt 
 
             if (!rättInMatning || bilToRemove < 0 || bilToRemove >= bilLista.Length) //Här kontrolleras om inmatningen är rätt, dvs om bilToRemove är mindre än 0 eller större eller lika med billista.
             {
+
                 Console.WriteLine("Ogiltigt index. Försök igen.");
                 return;
             }
@@ -267,7 +270,7 @@ namespace schoolProject
                 if (bilLista[i].bilMarke.ToUpper() == söktMärke) // för att kontrollera om bilmärket stämmer ed sökt bil. 
                 {
                     Array.Sort(bilLista, (x, y) => x.regNu.CompareTo(y.regNu));
-                    Console.WriteLine("Bilerna är sortrade på regnummer.");
+                    
                     Console.WriteLine("------------------------------------------------------------------");
                     Console.WriteLine($"Bilen är: {bilLista[i].bilMarke}|| Regnum är: {bilLista[i].regNu}|| Färgen är: {bilLista[i].farger}||");
                     Console.WriteLine("------------------------------------------------------------------");
@@ -281,7 +284,7 @@ namespace schoolProject
             {
                
                 Console.WriteLine("Inga bilar av det sökta märket hittades.");
-
+                return;
             }
 
         }
